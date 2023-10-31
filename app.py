@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output
 
 # Run Dash app
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
+server = app.server
 
 app.layout = html.Div([
     html.H2("Page de connexion"),
