@@ -1,3 +1,4 @@
 class LoginResponse:
-    def __int__(self, connection):
-        self.connection = connection
+    def __init__(self, response, style):
+        self.style = style
+        self.response = response

@@ -2,6 +2,10 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 
+from login.LoginConstructor import LoginConstructor
+from login.LoginRequest import LoginRequest
+from login.LoginResponse import LoginResponse
+from login.LoginViewModel import LoginViewModel
 
 # Run Dash app
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
@@ -21,6 +25,7 @@ app.layout = html.Div([
     html.Div(id='login-status'),
 ])
 
+
 @app.callback(
     Output('login-status', 'children'),
     [Input('login-button', 'n_clicks')],
@@ -29,10 +34,11 @@ app.layout = html.Div([
 )
 def login(n_clicks, username, password):
     if n_clicks > 0:
-        if username == 'utilisateur' and password == 'motdepasse':
-            return html.Div("Connexion réussie", style={'color': 'green'})
-        else:
-            return html.Div("Échec de la connexion. Veuillez vérifier vos informations d'identification.", style={'color': 'red'})
+        login_request: LoginRequest = LoginRequest(username, password)
+        login_constructor: LoginConstructor = LoginConstructor(login_request)
+        response: LoginResponse = login_constructor.is_connection_ok()
+        view: LoginViewModel = LoginViewModel(response)
+        return view.generate_view()
 
 
 if __name__ == '__main__':
